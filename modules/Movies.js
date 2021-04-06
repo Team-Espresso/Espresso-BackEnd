@@ -5,13 +5,13 @@ const superagent = require('superagent');
 
 const Media = {};
 
-// function Media(title, overview, poster_path, release_date, rating) {
-//   this.title = title;
-//   this.overview = overview;
-//   this.poster = `https://image.tmdb.org/t/p/w200${poster_path}`;
-//   this.releaseDate = release_date;
-//   this.rating = rating;
-// }
+function MediaObj(title, overview, poster_path, release_date, rating) {
+  this.title = title;
+  this.overview = overview;
+  this.poster_path = poster_path;
+  this.releaseDate = release_date;
+  this.rating = rating;
+};
 
 Media.handleSearch = async(req, res) => {
   const url = `https://api.themoviedb.org/3/search/movie`;
@@ -27,9 +27,9 @@ Media.handleSearch = async(req, res) => {
     .get(url)
     .query(queryMovie)
     .then((results) => {
-      console.log(results.body);
-      const movieArray = results.body.results.map((film) => film);
-      console.log(movieArray[0]);
+      // console.log(results.body);
+      const movieArray = results.body.results.map((film) => new MediaObj(film.title, film.overview, film.poster_path, film.release_date, film.vote_average));
+      console.log('MOVIEARRAYYYY!!!!', movieArray);
       res.status(200).send({
         movieArray
       });
@@ -40,13 +40,10 @@ Media.handleSearch = async(req, res) => {
 }
 
 Media.handleMovie = async(req, res) => {
-  const url = `https://api.themoviedb.org/3/trending`;
+  const url = `https://api.themoviedb.org/3/trending/movie/week`;
   const queryMovie = {
     api_key: movieKey,
-    media_type: 'movie',
-    time_window: 'week',
     language: "en-US"
-
   };
 
   console.log('made it to movies');
@@ -55,9 +52,9 @@ Media.handleMovie = async(req, res) => {
     .get(url)
     .query(queryMovie)
     .then((results) => {
-      console.log(results.body);
-      const movieArray = results.body.results.map((film) => film);
-      console.log(movieArray[0]);
+      // console.log(results.body);
+      const movieArray = results.body.results.map((film) => new MediaObj(film.title, film.overview, film.poster_path, film.release_date, film.vote_average));
+      // console.log(movieArray[0]);
       res.status(200).send({
         movieArray
       });
@@ -68,13 +65,10 @@ Media.handleMovie = async(req, res) => {
 }
 
 Media.handleShow = async(req, res) => {
-  const url = `https://api.themoviedb.org/3/trending`;
+  const url = `https://api.themoviedb.org/3/trending/tv/week`;
   const queryShow = {
     api_key: movieKey,
-    media_type: 'tv',
-    time_window: 'week',
     language: "en-US"
-
   };
 
   console.log('made it to shows');
@@ -83,11 +77,11 @@ Media.handleShow = async(req, res) => {
     .get(url)
     .query(queryShow)
     .then((results) => {
-      console.log(results.body);
-      const movieArray = results.body.results.map((film) => film);
-      console.log(movieArray[0]);
+      // console.log(results.body);
+      const showArray = results.body.results.map((film) => new MediaObj(film.title, film.overview, film.poster_path, film.release_date, film.vote_average));
+      // console.log(showArray[0]);
       res.status(200).send({
-        movieArray
+        showArray
       });
     }).catch((err) =>{
       console.log('error in shows', err);
