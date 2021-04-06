@@ -2,17 +2,22 @@
 
 const mongoose = require('mongoose');
 
+const commentSchema = new mongoose.Schema({
+  user_rating: {type: Number},
+  comment: {type: String}
+});
+
 const movieSchema = new mongoose.Schema({
-  name: {type: String},
-  description: {type: String},
-  status: {type: String},
-  rating: {type: Number}
+  title: {type: String},
+  overview: {type: String},
+  poster_path: {type: String},
+  release_date: {type: Date},
+  rating: {type: Number},
+  comments: [commentSchema]
 });
 
 const userSchema = new mongoose.Schema({
   email: {type: String, required: true, unique: true},
-  name: {type: String},
-  about: {type:String},
   watchList: [movieSchema]
 });
 

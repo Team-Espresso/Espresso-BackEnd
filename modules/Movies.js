@@ -9,7 +9,7 @@ function MediaObj(title, overview, poster_path, release_date, rating) {
   this.title = title;
   this.overview = overview;
   this.poster_path = poster_path;
-  this.releaseDate = release_date;
+  this.release_date = release_date;
   this.rating = rating;
 };
 
