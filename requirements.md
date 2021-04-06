@@ -27,14 +27,37 @@
 
 - Users will not be able to watch trailers from our app.
 - Users will not be able to navigate directly to content player apps.
-- Users will not be able to 
- - What will your product do
-Describe the individual features that your product will do.
-High overview of each. Only need to list 4-5
-Example:
-The web app will provide information to the users about all the different Cat Cafe’s in the area
-The web app will provide both walking and driving directions to each of the destinations
-Users will be able to “Star” their favorite shops.
-Each shop will contain reviews of the customer’s experiences
-OUT - What will your product not do.
-These should be features that you will make very clear from the beginning that you will not do during development. These should be limited and very few. Pick your battles wisely. This should only be 1 or 2 things. Example: My website will never turn into an IOS or Android app.
+- Users will not be able to filter movies or tv shows.
+
+---
+
+## Functional Requirements
+
+- As a user, I want to see trending movies so I can decide on a movie I want to watch.
+- As a user I want to add movies to my watch list so I can come back later and see what I saved.
+- As a user I want to browse movies based on Genre.
+- As a user I want to add ratings and comments to a movie after I have watched it.
+- As a user I want to login in to save my watch lists.
+- As a user, I want to update my profile info.
+
+---
+
+## Data Flow
+
+A user will be prompted to login to access the site through Auth0. Once they login, they will be presented with the home page and trending movies and tv shows, a search field and a button to view their Watchlist. If they click on Watchlist, they will be taken to a page that will show all of their saved movies and shows. They can navigate back to the home page by clciking on Home.
+
+---
+
+## Non-Functional Requirements
+
+### Security
+
+Users must login using Auth0 for authentication before authorization is granted for use of the features of our site. No sensitive data will be shared publicly, in searches or url's.
+
+### Portability
+
+Our app will be responsive for mobile and desktop.
+
+### Usability
+
+Our app will be simple and elegant with minimal features so that usability is high. We want to avoid clunky and bloated features that make the site more difficult to use.

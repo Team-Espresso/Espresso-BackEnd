@@ -43,8 +43,8 @@ Media.handleMovie = async(req, res) => {
   const url = `https://api.themoviedb.org/3/trending`;
   const queryMovie = {
     api_key: movieKey,
-    media_type: movie,
-    time_window: week,
+    media_type: 'movie',
+    time_window: 'week',
     language: "en-US"
 
   };
@@ -71,8 +71,8 @@ Media.handleShow = async(req, res) => {
   const url = `https://api.themoviedb.org/3/trending`;
   const queryShow = {
     api_key: movieKey,
-    media_type: tv,
-    time_window: week,
+    media_type: 'tv',
+    time_window: 'week',
     language: "en-US"
 
   };
