@@ -71,7 +71,7 @@ Media.handleShow = async(req, res) => {
     language: "en-US"
   };
 
-  console.log('made it to shows');
+  console.log('made it to shows', req.body);
 
   await superagent
     .get(url)
