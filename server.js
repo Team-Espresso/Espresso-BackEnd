@@ -6,7 +6,7 @@ const Media = require('./modules/Movies');
 const Data = require('./modules/WatchList');
 const app = express();
 const cors = require('cors');
-app.use(express());
+app.use(express.json());
 app.use(cors());
 
 
@@ -22,15 +22,20 @@ db.once('open', function () {
   console.log('connected to DB');
 });
 
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 app.get('/movies', Media.handleMovie);
 app.get('/shows', Media.handleShow);
 app.get('/search', Media.handleSearch);
 app.get('/watchlist', Data.getUser);
 app.post('/watchlist/movie', Data.addMovie);
 app.post('/watchlist', Data.addComment);
-app.put('/watchlist/:movieId/:id', Data.updateComment);
+app.post('/watchlist/:movieId/:idx', Data.updateComment);
 app.delete('/watchlist/movie/:movieId', Data.deleteMovie);
-app.delete('/watchlist/:movieId/:id', Data.deleteComment);
+app.delete('/watchlist/:movieId/:idx', Data.deleteComment);
 
 // app.post('/watchList', Media.addAMovie);
 // app.delete('/watchList/:index', Media.deleteAMovie);
