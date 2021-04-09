@@ -42,7 +42,7 @@ Data.addComment = async(request, response) => {
     console.log(comment);
     entry.comments.push(comment);
     entry.save();
-    response.status(200).send(entry.watchList);
+    response.status(200).send(entry);
   })
 }
 
@@ -65,22 +65,22 @@ Data.addComment = async(request, response) => {
 
 
 Data.deleteComment = async(request, response) => {
-  const movieId = request.params.movieId;
-  const commentId = request.params.id;
+  const id = request.params.commentId;
   const email = request.query.email;
-  console.log("we are in deleteAComment", email, movieId, commentId);
+  console.log("we are in deleteAComment", email, id);
   
   await User.findOne({ email: email }, (err, entry) => {
     if (err) return err;
     // console.log("this is our entry", entry);
-    console.log(entry.watchList);
-    const index = entry.watchList.indexOf(entry.watchList.id(movieId));
+    const index = entry.comments.indexOf(entry.comments.id(id));
     console.log('INDEXJSXJS', index)
-    });
-    console.log("this is our newMovieArray", newMovieArray);
-    entry.movies = newMovieArray;
+    entry.comments.splice(index, 1);
+    // const newMovieArray = entry.watchList.filter((movie) => movie._id !== id);
+    // console.log("this is our newMovieArray", newMovieArray);
     entry.save();
-    response.status(200).send(newMovieArray)
+    console.log(entry.comments);
+    response.status(200).send(entry.comments);
+  })
 }
 
 
@@ -103,28 +103,27 @@ Data.addMovie = async(request, response) => {
 }
 
 
-Data.deleteComment = async(request, response) => {
-  const movieId = request.params.movieId;
-  const idx = request.params.idx;
-  const email = request.query.email;
-  // console.log("we are in deleteAComment", email, movieId, idx);
-  await User.findByIdAndDelete(movieId, function (err, entry) {
-    if(err){
-      console.log(err.message)
-      } else{
-        response.status(200).send('success!');
-      }
-  }) 
-}
+// Data.deleteComment = async(request, response) => {
+//   const commentId = request.params.commentId;
+//   const email = request.query.email;
+//   // console.log("we are in deleteAComment", email, movieId, idx);
+//   await User.findByIdAndDelete(commentId, function (err, entry) {
+//     if(err){
+//       console.log(err.message)
+//       } else{
+//         response.status(200).send('success!');
+//       }
+//   }) 
+// }
 
 
 Data.updateComment = async (request, response) => {
-  const movieId = request.params.movieId;
+  const commentId = request.params.commentId;
   console.log('req body!', request.body);
   const email = request.body.email;
   const comment = { rating: request.body.rating, comment: request.body.comment};
   console.log('we are in updateAComment', {movieId, idx, email, comment});
-  await User.findByIdAndUpdate(movieId, comment, {new:true, useFindAndModify:false}), function(err,entry){
+  await User.findByIdAndUpdate(movieId, comment, {new:true, useFindAndModify:false}), function(err, entry){
     if(err){
       console.log(err.message);
     } else {
@@ -169,7 +168,7 @@ Data.deleteMovie = async(request, response) => {
     // console.log("this is our newMovieArray", newMovieArray);
     entry.save();
     console.log(entry.watchList);
-    response.status(200).send(entry.watchList);
+    response.status(200).send(entry);
   })
 }
 
