@@ -32,11 +32,11 @@ app.get('/movies', Media.handleMovie);
 app.get('/shows', Media.handleShow);
 app.get('/search', Media.handleSearch);
 app.get('/watchlist', Data.getUser);
-app.post('/watchlist/movie', Data.addMovie);
-app.post('/watchlist', Data.addComment);
+app.post('/add-movie', Data.addMovie);
+app.post('/add-comment', Data.addComment);
 app.post('/watchlist/comment/:commentId', Data.updateComments);
-app.delete('/watchlist/movie/:movieId', Data.deleteMovie);
-app.delete('/watchlist/comment/:commentId', Data.deleteComment);
+app.delete('/delete-movie/:movieId', Data.deleteMovie);
+app.delete('/delete-comment/:commentId', Data.deleteComment);
 
 // app.post('/watchList', Media.addAMovie);
 // app.delete('/watchList/:index', Media.deleteAMovie);
