@@ -7,7 +7,13 @@ const Data = require('./modules/WatchList');
 const app = express();
 const cors = require('cors');
 app.use(express.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: 'https://showmethemovies.netlify.app',
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 
 const PORT = process.env.PORT;
@@ -33,7 +39,7 @@ app.get('/search', Media.handleSearch);
 app.get('/watchlist', Data.getUser);
 app.post('/watchlist/movie', Data.addMovie);
 app.post('/watchlist', Data.addComment);
-app.post('/watchlist/:commentId', Data.updateComment);
+app.post('/watchlist/comment/:commentId', Data.updateComments);
 app.delete('/watchlist/movie/:movieId', Data.deleteMovie);
 app.delete('/watchlist/comment/:commentId', Data.deleteComment);
 

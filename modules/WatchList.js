@@ -27,6 +27,7 @@ const Data = {};
 //   res.status(500).send('Something broke!')
 // })
 
+
 Data.addComment = async(request, response) => {
   console.log('inside of addComment', request.body);
   const email = request.body.email;
@@ -117,28 +118,40 @@ Data.addMovie = async(request, response) => {
 // }
 
 
-Data.updateComment = async (request, response) => {
-  const commentId = request.params.commentId;
-  console.log('req body!', request.body);
-  const email = request.body.email;
-  const comment = { rating: request.body.rating, comment: request.body.comment};
-  console.log('we are in updateAComment', {movieId, idx, email, comment});
-  await User.findByIdAndUpdate(movieId, comment, {new:true, useFindAndModify:false}), function(err, entry){
-    if(err){
-      console.log(err.message);
-    } else {
-      response.status(200).send('success');
-    }
-  }
-  // } ;
-  // console.log('req body!', request.body); 
+Data.updateComments = async (request, response) => {
+  console.log("inside update");
+    const id = request.params.commentId;
+    console.log('req body!', request.body);
+    const email = request.body.email;
+    const comment = { rating: request.body.rating, comment: request.body.comment};
 
-  // await User.findOne({email:email}, (err, user) => {
-  //   if(err) return console.log(err.message);
-  //   const movieIndex = user.watchList.indexOf((user.watchlist.filter(movie => movie._id === movieId))[0]);
-  //   user.watchList[movieIndex].comments.splice(index, 1, comment);
-  //   user.save();
+    await User.findOne({ email: email }, (err, entry) => {
+      if(err) return console.error(err);
+      if(!entry){
+        return console.error('user not found');
+      }
+    const index = entry.comments.indexOf(entry.comments.id(id));
+    entry.comments.splice(index, 1, comment);
+    entry.save();
+    response.status(200).send(entry.comments);
+    })
+    // console.log('we are in updateAComment', {commentId, email, comment});
+  //   Comment.findByIdAndUpdate(id, data, {new:true, useFindAndModify:false});
+  //   response.status(200).send(item);
+  // } catch(err){
+  //   return ( comment );
+  // }
 }
+//     if(err) return console.error(err);
+//     if(!entry){
+//       return console.error('user not found');
+//     }
+//     const index = entry.comments.indexOf(entry.comments.id(id));
+//     entry.comments.splice(index, 1, comment);
+//     entry.save();
+//     response.status(200).send(entry);
+//   });
+// }  
 
 
 Data.getUser = async(request, response) => {
