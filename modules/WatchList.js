@@ -132,7 +132,7 @@ Data.updateComments = async (request, response) => {
     console.log('req body!', request.body, 'id', id);
     const email = request.body.email;
     const comment = request.body.comment;
-    const rating = request.body.rating;
+    const rating = parseInt(request.body.user_rating);
 
     await User.findOne({ email: email }, (err, entry) => {
       if(err) return console.error(err);
