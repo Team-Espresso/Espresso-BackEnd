@@ -144,7 +144,7 @@ Data.updateComments = async (request, response) => {
       console.log(comments[i]);
       if (comments[i]._id == id) {
         comments[i].comment = comment;
-        comments[i].rating = rating;
+        comments[i].user_rating = rating;
 
         entry.save(function(err) {
           if (err){console.log(err.message)};
