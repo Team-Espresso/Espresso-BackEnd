@@ -34,7 +34,7 @@ app.get('/search', Media.handleSearch);
 app.get('/watchlist', Data.getUser);
 app.post('/add-movie', Data.addMovie);
 app.post('/add-comment', Data.addComment);
-app.post('/watchlist/comment/:commentId', Data.updateComments);
+app.put('/watchlist/:commentId', Data.updateComments);
 app.delete('/delete-movie/:movieId', Data.deleteMovie);
 app.delete('/delete-comment/:commentId', Data.deleteComment);
 

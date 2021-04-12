@@ -5,8 +5,8 @@ const User = require('./Users.js');
 
 const Data = {};
 // Data.collection.drop();
-// const peter = new User({
-//   email: 'peterjast@gmail.com',
+// const demo = new User({
+//   email: 'demo@demo.com',
 //   watchList: 
 //     [{title: 'Godzilla vs. Kong',
 //     overview: 'In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages.', 
@@ -18,7 +18,7 @@ const Data = {};
 //       comment: 'a comment about this movie'
 //     }]  
 // });
-// peter.save();
+// demo.save();
 
 
 
@@ -32,7 +32,7 @@ Data.addComment = async(request, response) => {
   console.log('inside of addComment', request.body);
   const email = request.body.email;
   const movieId = request.body.movieId;
-  const comment = { user_rating: request.body.rating, comment: request.body.comment}
+  const comment = { movie_id: movieId, user_rating: request.body.rating, comment: request.body.comment}
   await User.findOne({ email: email }, (err, entry) => {
     if(err) return console.error(err);
     if(!entry){
@@ -95,11 +95,20 @@ Data.addMovie = async(request, response) => {
   await User.findOne({ email: email }, (err, entry) => {
     if(err) return console.error(err);
     if(!entry){
-      return console.error('user not found');
-    }
+      const user = new User({
+        email: email,
+        watchList: 
+          [movie],
+        comments:
+          []  
+      })
+    user.save();
+    response.status(200).send(user.watchList);
+    } else{
     entry.watchList.push(movie);
     entry.save();
     response.status(200).send(entry.watchList);
+    }
   })
 }
 
@@ -117,23 +126,39 @@ Data.addMovie = async(request, response) => {
 //   }) 
 // }
 
-
 Data.updateComments = async (request, response) => {
   console.log("inside update");
     const id = request.params.commentId;
-    console.log('req body!', request.body);
+    console.log('req body!', request.body, 'id', id);
     const email = request.body.email;
-    const comment = { rating: request.body.rating, comment: request.body.comment};
+    const comment = request.body.comment;
+    const rating = request.body.rating;
 
     await User.findOne({ email: email }, (err, entry) => {
       if(err) return console.error(err);
       if(!entry){
-        return console.error('user not found');
+        return console.error('User not found');
       }
-    const index = entry.comments.indexOf(entry.comments.id(id));
-    entry.comments.splice(index, 1, comment);
-    entry.save();
-    response.status(200).send(entry.comments);
+    const comments = entry.comments;
+    for (let i = 0; i < comments.length; i++ ) {
+      console.log(comments[i]);
+      if (comments[i]._id == id) {
+        comments[i].comment = comment;
+        comments[i].rating = rating;
+
+        entry.save(function(err) {
+          if (err){console.log(err.message)};
+          console.log("comment updated");
+          response.status(200).send(entry.comments);
+        });
+      } else {
+        console.log("no comment with this id");
+      }
+    }  
+    // const index = entry.comments.indexOf(entry.comments.id(id));
+    // entry.comments.splice(index, 1, comment);
+    // entry.save();
+    // response.status(200).send(entry.comments);
     })
     // console.log('we are in updateAComment', {commentId, email, comment});
   //   Comment.findByIdAndUpdate(id, data, {new:true, useFindAndModify:false});
@@ -142,16 +167,6 @@ Data.updateComments = async (request, response) => {
   //   return ( comment );
   // }
 }
-//     if(err) return console.error(err);
-//     if(!entry){
-//       return console.error('user not found');
-//     }
-//     const index = entry.comments.indexOf(entry.comments.id(id));
-//     entry.comments.splice(index, 1, comment);
-//     entry.save();
-//     response.status(200).send(entry);
-//   });
-// }  
 
 
 Data.getUser = async(request, response) => {
@@ -163,6 +178,25 @@ Data.getUser = async(request, response) => {
     response.status(200).send(person[person.length -1]);
   })
 }
+
+// Data.addUser = async(request, response, next) => {
+//   console.log('inside add user');
+//   try{
+//   const email = request.body.email;
+//   // console.log(request.query);
+//   const user = new User({
+//       email: 'email',
+//       watchList: 
+//         [],
+//       comments:
+//         []  
+//     })
+//   const result = await user.save();
+//   response.state(200).send(result);
+//   } catch(err){
+//     next(err)
+//   }
+// }
 
 Data.deleteMovie = async(request, response) => {
   const id = request.params.movieId;
